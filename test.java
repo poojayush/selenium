@@ -1,12 +1,113 @@
 package test.util.org;
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
+import java.util.List;
+
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WindowType;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
 public class test {
 	static WebDriver driver = new ChromeDriver();
+	
+	public void zoominandout() throws AWTException, InterruptedException {
+		
+		Robot robot = new Robot();
+		System.out.println("About to zoom in");
+		for (int i = 0; i < 3; i++) {			
+			robot.keyPress(KeyEvent.VK_CONTROL);
+			robot.keyPress(KeyEvent.VK_ADD);
+			robot.keyRelease(KeyEvent.VK_ADD);
+			robot.keyRelease(KeyEvent.VK_CONTROL);
+		}
+		Thread.sleep(5000);
+		System.out.println("About to zoom out");
+		for (int i = 0; i < 4; i++) {
+			robot.keyPress(KeyEvent.VK_CONTROL);
+			robot.keyPress(KeyEvent.VK_SUBTRACT);
+			robot.keyRelease(KeyEvent.VK_SUBTRACT);
+			robot.keyRelease(KeyEvent.VK_CONTROL);
+		}
+	}
+	public void HorizontalScroll(){
+		
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("window.scrollBy(0,250)", "");
+		
+		JavascriptExecutor js2 = (JavascriptExecutor) driver;
+	       js2.executeScript("window.scrollBy(0,-350)", "");
+	}
+	public void drpdown() {
+
+        //Creating instance of Chrome driver
+        WebDriver driver = new ChromeDriver();
+
+        // Navigate to the URL
+        driver.get("https://demoqa.com/select-menu");
+
+        //Maximizing window
+        driver.manage().window().maximize();
+
+        //Selecting the multi-select element by locating its id
+        Select select = new Select(driver.findElement(By.id("cars")));
+
+        //Get the list of all the options
+        System.out.println("The dropdown options are -");
+
+        List<WebElement> options = select.getOptions();
+
+        for(WebElement option: options)
+            System.out.println(option.getText());
+
+        //Using isMultiple() method to verify if the element is multi-select, if yes go onto next steps else eit
+        if(select.isMultiple()){
+
+            //Selecting option as 'Opel'-- ByIndex
+            System.out.println("Select option Opel by Index");
+            select.selectByIndex(2);
+
+            //Selecting the option as 'Saab'-- ByValue
+            System.out.println("Select option saab by Value");
+            select.selectByValue("saab");
+
+            // Selecting the option by text
+            System.out.println("Select option Audi by Text");
+            select.selectByVisibleText("Audi");
+
+            //Get the list of selected options
+            System.out.println("The selected values in the dropdown options are -");
+
+            List<WebElement> selectedOptions = select.getAllSelectedOptions();
+
+            for(WebElement selectedOption: selectedOptions)
+                System.out.println(selectedOption.getText());
+
+
+            // Deselect the value "Audi" by Index
+            System.out.println("DeSelect option Audi by Index");
+            select.deselectByIndex(3);
+
+            //Deselect the value "Opel" by visible text
+            System.out.println("Select option Opel by Text");
+            select.deselectByVisibleText("Opel");
+
+            //Validate that both the values are deselected
+            System.out.println("The selected values after deselect in the dropdown options are -");
+            List<WebElement> selectedOptionsAfterDeselect = select.getAllSelectedOptions();
+
+            for(WebElement selectedOptionAfterDeselect: selectedOptionsAfterDeselect)
+                System.out.println(selectedOptionAfterDeselect.getText());
+
+            //Step#8- Deselect all values
+            select.deselectAll();
+        }
+	}
+	
 	
 	public void rahulshetty() throws InterruptedException  {
 		driver.switchTo().newWindow(WindowType.TAB);
@@ -109,8 +210,8 @@ public class test {
 		 */
 		
 		test t = new test();
-		t.rahulshetty();
-		
+		//t.rahulshetty();
+		t.drpdown();
 		
 		
 	}
